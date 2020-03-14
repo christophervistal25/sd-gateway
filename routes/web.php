@@ -1,7 +1,9 @@
 <?php
 
 
-$router->get('/', 'UserController@index');
+$router->get('/', function () {
+	echo 'Working in progress';
+});
 
 
 $router->group(['prefix' => 'api'], function () use ($router) {
