@@ -5,9 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Device;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class DeviceController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => ['register', 'login']]);
+    }
 
     public function message(int $device_id)
     {
@@ -25,23 +31,29 @@ class DeviceController extends Controller
             'password'             => 'required',
         ]);
 
-        return Device::create($request->all());
+        $credentials = $request->only(['primary_phone_number', 'password']);
+        $device = Device::create($credentials);
+
+        return $this->respondWithTokenForNewDevice(
+            Auth::attempt($credentials),
+            $device
+        );
 
     }
 
     public function login(Request $request)
     {
-        $device = Device::where('primary_phone_number', $request->primary_phone_number)
-                ->first();
-                
+          $this->validate($request, [
+            'primary_phone_number' => 'required',
+            'password'             => 'required',
+        ]);
 
-        if ($device && Hash::check($request->password, $device->password)) {
-            return response()->json(['info' => $device, 'message' => $device->messages]);
+        $credentials = $request->only(['primary_phone_number', 'password']);
+        if (! $token = Auth::attempt($credentials)) {
+            return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        return response()->json(['message' => 'Unauthorized'], 401);
-
-
+        return $this->respondWithToken($token);
     }
 
 }

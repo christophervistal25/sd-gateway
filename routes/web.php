@@ -13,3 +13,4 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post('/device/send/message', 'MessageController@store');
     $router->get('/device/messages/{device_id}', 'DeviceController@message');
 });
+
