@@ -2,8 +2,10 @@
 
 
 $router->get('/', function () {
-	echo 'Working in progress';
+	return 'Welcome to SDGateway';
 });
+
+
 
 
 $router->group(['prefix' => 'api'], function () use ($router) {

@@ -15,6 +15,12 @@ class MessageController extends Controller
     
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'device_id'    => 'required',
+            'phone_number' => 'required',
+            'message'      => 'required'
+        ]);
+
         $device = Device::find($request->device_id);
 
         $message = new Message([

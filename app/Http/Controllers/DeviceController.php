@@ -15,6 +15,7 @@ class DeviceController extends Controller
         $this->middleware('auth', ['except' => ['register', 'login']]);
     }
 
+
     public function message(int $device_id)
     {
         $deviceMessages = Device::with('messages')->find($device_id)
@@ -43,7 +44,7 @@ class DeviceController extends Controller
 
     public function login(Request $request)
     {
-          $this->validate($request, [
+        $this->validate($request, [
             'primary_phone_number' => 'required',
             'password'             => 'required',
         ]);
