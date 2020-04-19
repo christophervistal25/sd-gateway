@@ -62,9 +62,11 @@ class DeviceControllerTest extends TestCase
     	$content = json_decode($route->response->getContent());
 
     	$route->seeJson([
-    		'token' => $content->token,
-    		'token_type' => $content->token_type,
-    		'expires_in' => $content->expires_in
+            'token'                => $content->token,
+            'token_type'           => $content->token_type,
+            'expires_in'           => $content->expires_in,
+            'primary_phone_number' => $content->primary_phone_number,
+            'id'                   => $content->id,
     	]);
     }
 

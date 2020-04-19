@@ -35,7 +35,7 @@ class DeviceController extends Controller
         $credentials = $request->only(['primary_phone_number', 'password']);
         $device = Device::create($credentials);
 
-        return $this->respondWithTokenForNewDevice(
+        return $this->respondTokenWithDeviceInfo(
             Auth::attempt($credentials),
             $device
         );
@@ -54,7 +54,12 @@ class DeviceController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        return $this->respondWithToken($token);
+        return $this->respondTokenWithDeviceInfo($token, Auth::user());
+    }
+
+    public function refreshToken()
+    {
+       return Auth::refresh(true, true);
     }
 
 }

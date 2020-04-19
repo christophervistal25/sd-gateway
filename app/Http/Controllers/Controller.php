@@ -18,7 +18,7 @@ class Controller extends BaseController
         ], 200);
     }
 
-    protected function respondWithTokenForNewDevice($token, $device)
+    protected function respondTokenWithDeviceInfo($token, $device)
     {
     	return response()->json([
 			'primary_phone_number' => $device->primary_phone_number,
